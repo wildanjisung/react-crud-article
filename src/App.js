@@ -1,15 +1,17 @@
 import logo from './logo.svg';
 import './App.css';
-import PersonList from './components/PersonList';
-import PersonAdd from './components/PersonAdd';
-import PersonRemove from './components/PersonRemove';
+import ArticleCreate from './components/ArticleCreate';
+import ArticleUpdate from './components/ArticleUpdate';
+import ArticleDelete from './components/ArticleDelete';
 
 function App() {
   return (
     <div className="App">
-      <PersonAdd/>
-      <PersonList/>
-      <PersonRemove/>
+      <ArticleCreate/>
+      <hr></hr>
+      <ArticleUpdate/>
+      <hr></hr>
+      <ArticleDelete/>
     </div>
   );
 }
