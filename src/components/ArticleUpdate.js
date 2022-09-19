@@ -40,7 +40,6 @@ export default function ArticleUpdate() {
   return (
     <div>
 
-      {/* Update */}
       <h3>Update</h3>
       <form onSubmit={updateArticle}>
         <label>

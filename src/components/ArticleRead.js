@@ -7,7 +7,7 @@ const client = axios.create({
   headers: { "x-hasura-admin-secret": "NbM1EjAYdMF71q6NA6SuJ931t3G2JU8KI4V8kUj6TMMB2USfc0Ziun4VMqNWRnfl"}
 });
 
-export default function ArticleCreate() {
+export default function ArticleRead() {
   const [article, setArticle] = useState([]);
   const [loading, setLoading] = useState(true);
 
