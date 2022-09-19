@@ -3,47 +3,42 @@ import React, { useState, useEffect }  from "react";
 
 // Init Axios baseURL and headers
 const client = axios.create({
-  baseURL: "https://internal-prawn-29.hasura.app/api/rest/article",
-  headers: { "x-hasura-admin-secret": "NbM1EjAYdMF71q6NA6SuJ931t3G2JU8KI4V8kUj6TMMB2USfc0Ziun4VMqNWRnfl"}
+  baseURL: "http://127.0.0.1:8000/products",
 });
 
 export default function ArticleCreate() {
-  const [article, setArticle] = useState([]);
+  const [product, setProduct] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const [authorId, setAuthorId] = useState("");
-  const [id, setId] = useState("");
-  const [rating, setRating] = useState("");
-  const [title, setTitle] = useState("");
+  const [name, setName] = useState("");
+  const [detail, setDetail] = useState("");
   
   useEffect(() => {
-    // Http request Read Article
+    // Http request Read product
     async function getArticle() {
       const response = await client.get("/");
-      setArticle(response.data._onetomany_article);
+      setProduct(response.data.data);
     }
-    // Check Condition if loading true then execute getArticle function for get new list article
+    // Check Condition if loading true then execute getArticle function for get new list product
     if (loading) getArticle();
     // change loading variable to false
     setLoading(false);
   }, [loading]); // only when variable loading change value will execute Hook useEffect
 
-  // Create function for call http request Create Article
+  // Create function for call http request Create product
   async function createArticle(evt) {
     evt.preventDefault();
     await client.post("/", 
     {
-      author_id: authorId,
-      id: id,
-      rating: rating,
-      title: title
+      name: name,
+      detail: detail,
     });
     // change value to call Hook useEffect
     setLoading(true);
   }
 
-  // show string No Article when no data displayed
-  if (!article) return "No Article!"
+  // show string No product when no data displayed
+  if (!product) return "No product!"
 
   return (
     <div>
@@ -51,38 +46,20 @@ export default function ArticleCreate() {
       <h3>Create</h3>
       <form onSubmit={createArticle}>
         <label>
-          Author Id:
+          name:
           <input
             type="text"
-            value={authorId}
-            onChange={e => setAuthorId(e.target.value)}
+            value={name}
+            onChange={e => setName(e.target.value)}
           />
         </label>
 
         <label>
-          Id:
+          detail:
           <input
             type="text"
-            value={id}
-            onChange={e => setId(e.target.value)}
-          />
-        </label>
-
-        <label>
-          Rating:
-          <input
-            type="text"
-            value={rating}
-            onChange={e => setRating(e.target.value)}
-          />
-        </label>
-
-        <label>
-          Title:
-          <input
-            type="text"
-            value={title}
-            onChange={e => setTitle(e.target.value)}
+            value={detail}
+            onChange={e => setDetail(e.target.value)}
           />
         </label>
         <input type="submit" value="Submit" />
@@ -90,9 +67,9 @@ export default function ArticleCreate() {
 
       <ul>
         {
-          article
-            .map(person =>
-              <li key={person.id}>{person.id} - {person.title}</li>
+          product
+            .map(data =>
+              <li key={data.id}>{data.id} - {data.name} - {data.detail}</li>
             )
         }
       </ul>

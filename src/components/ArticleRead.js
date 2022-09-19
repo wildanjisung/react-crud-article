@@ -3,21 +3,20 @@ import React, { useState, useEffect }  from "react";
 
 // Init Axios baseURL and headers
 const client = axios.create({
-  baseURL: "https://internal-prawn-29.hasura.app/api/rest/article",
-  headers: { "x-hasura-admin-secret": "NbM1EjAYdMF71q6NA6SuJ931t3G2JU8KI4V8kUj6TMMB2USfc0Ziun4VMqNWRnfl"}
+  baseURL: "http://127.0.0.1:8000/products",
 });
 
 export default function ArticleRead() {
-  const [article, setArticle] = useState([]);
+  const [product, setProduct] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Http request Read Article
+    // Http request Read product
     async function getArticle() {
       const response = await client.get("/");
-      setArticle(response.data._onetomany_article);
+      setProduct(response.data.data);
     }
-    // Check Condition if loading true then execute getArticle function for get new list article
+    // Check Condition if loading true then execute getArticle function for get new list product
     if (loading) getArticle();
     // change loading variable to false
     setLoading(false);
@@ -27,22 +26,22 @@ export default function ArticleRead() {
     setLoading(true)
   }
 
-  // show string No Article when no data displayed
-  if (!article) return "No Article!"
+  // show string No product when no data displayed
+  if (!product) return "No product!"
 
   return (
     <div>
 
-      <h3>Read Article</h3>
+      <h3>Read product</h3>
       <button onClick={setReload}>
         Refresh
       </button>
 
       <ul>
         {
-          article
-            .map(person =>
-              <li key={person.id}>{person.id} - {person.title}</li>
+          product
+            .map(data =>
+              <li key={data.id}>{data.id} - {data.name} - {data.detail}</li>
             )
         }
       </ul>

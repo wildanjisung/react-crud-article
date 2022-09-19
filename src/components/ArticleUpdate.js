@@ -2,23 +2,21 @@ import axios from "axios";
 import React, { useState, useEffect }  from "react";
 
 const client = axios.create({
-  baseURL: "https://internal-prawn-29.hasura.app/api/rest/article",
-  headers: { "x-hasura-admin-secret": "NbM1EjAYdMF71q6NA6SuJ931t3G2JU8KI4V8kUj6TMMB2USfc0Ziun4VMqNWRnfl"}
+  baseURL: "http://127.0.0.1:8000/products",
 });
 
 export default function ArticleUpdate() {
-  const [article, setArticle] = useState([]);
+  const [product, setProduct] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const [authorId, setAuthorId] = useState("");
   const [id, setId] = useState("");
-  const [rating, setRating] = useState("");
-  const [title, setTitle] = useState("");
+  const [name, setName] = useState("");
+  const [detail, setDetail] = useState("");
   
   useEffect(() => {
     async function getArticle() {
       const response = await client.get("/");
-      setArticle(response.data._onetomany_article);
+      setProduct(response.data.data);
     }
     if (loading) getArticle();
     setLoading(false);
@@ -28,31 +26,22 @@ export default function ArticleUpdate() {
   async function updateArticle(evt) {
     evt.preventDefault();
     await client.put(id, {
-      author_id: authorId,
-      rating: rating,
-      title: title
+      name: name,
+      detail: detail,
     });
     setLoading(true);
   }
 
-  if (!article) return "No post!"
+  if (!product) return "No post!"
 
   return (
     <div>
 
       <h3>Update</h3>
       <form onSubmit={updateArticle}>
-        <label>
-          Author Id:
-          <input
-            type="text"
-            value={authorId}
-            onChange={e => setAuthorId(e.target.value)}
-          />
-        </label>
 
         <label>
-          Id:
+          id:
           <input
             type="text"
             value={id}
@@ -61,20 +50,20 @@ export default function ArticleUpdate() {
         </label>
 
         <label>
-          Rating:
+          name:
           <input
             type="text"
-            value={rating}
-            onChange={e => setRating(e.target.value)}
+            value={name}
+            onChange={e => setName(e.target.value)}
           />
         </label>
 
         <label>
-          Title:
+          detail:
           <input
             type="text"
-            value={title}
-            onChange={e => setTitle(e.target.value)}
+            value={detail}
+            onChange={e => setDetail(e.target.value)}
           />
         </label>
         <input type="submit" value="Submit" />
@@ -84,9 +73,9 @@ export default function ArticleUpdate() {
       
       <ul>
         {
-          article
-            .map(article =>
-              <li key={article.id}>{article.id} - {article.title}</li>
+          product
+            .map(data =>
+              <li key={data.id}>{data.id} - {data.name} - {data.detail}</li>
             )
         }
       </ul>
